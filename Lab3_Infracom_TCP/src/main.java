@@ -6,7 +6,7 @@ public class main {
 		
         System.out.println("Esto es una prueba de log");
 
-        logPrueba.GenerarLog("Jessica202013355", "Jeje\nSi sirve brrrr");
+        logPrueba.GenerarLog("Jessica202013355", "Jeje\nSi sirve brrrrr");
 
 	}
 }
