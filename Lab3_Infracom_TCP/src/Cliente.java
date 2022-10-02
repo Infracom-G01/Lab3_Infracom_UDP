@@ -12,10 +12,10 @@ public class Cliente extends Thread{
     //*********************************************************** 
 
     private int ID;
-     final String HOST = "localhost";
-     final int PUERTO = 5000;
-     DataInputStream in;
-     DataOutputStream out;
+    final String HOST = "localhost";
+    final int PUERTO = 5000;
+    DataInputStream in;
+    DataOutputStream out;
 
     //***********************************************************
     //**********************Constructor**************************
@@ -39,9 +39,9 @@ public class Cliente extends Thread{
  
             in = new DataInputStream(sc.getInputStream());
             out = new DataOutputStream(sc.getOutputStream());
- 
+            
             //Envio un mensaje al cliente
-            out.writeUTF("¡Hola mundo desde el cliente!");
+            out.writeUTF("¡Hola mundo desde el cliente!" + Integer.toString(ID));
  
             //Recibo el mensaje del servidor
             String mensaje = in.readUTF();
