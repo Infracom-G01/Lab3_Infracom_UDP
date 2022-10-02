@@ -16,7 +16,7 @@ public class main {
         {
             Cliente C=new Cliente(i);
             C.start();
-            listaClientes.add(C);
+            //listaClientes.add(C);
         }
         */
     
@@ -26,8 +26,8 @@ public class main {
         //System.out.println("Codigo has: ");
         //System.out.println(x.hashCode());
         
+        Cliente C=new Cliente(1);
+        C.start();
 
-        Cliente c = new Cliente(0);
-        c.start();
 	}
 }
