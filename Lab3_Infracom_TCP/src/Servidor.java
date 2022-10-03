@@ -18,6 +18,8 @@ public class Servidor {
     boolean serverRunning = true;
     FileInputStream fr;
     OutputStream os;
+    DataInputStream intxt;
+    DataOutputStream outtxt;
 
     //***********************************************************
     //**********************Constructor**************************
@@ -51,29 +53,27 @@ public class Servidor {
 
               Socket cliente = serverSocket.accept();
               System.out.println("New connection received" );
-  
-              //in = new DataInputStream(cliente.getInputStream());
-              //out = new DataOutputStream(cliente.getOutputStream());
               
+              os = cliente.getOutputStream();
+              intxt = new DataInputStream(cliente.getInputStream());
+              outtxt = new DataOutputStream(os);
+
+              System.out.println("Cliente conectado");
+
+              // Leo el mensaje que me envia
+              String mensaje = intxt.readUTF();
+              System.out.println("Se recibio mensaje " + mensaje);
+              
+              // Envio mensaje de confirmacion
+              outtxt.writeUTF("ACK desde el servidor");
+
               fr = new FileInputStream("Lab3_Infracom_TCP/src/ArchivosEnviados/og.txt");
               byte [] b = new byte[20002];
               fr.read(b,0,b.length);
 
-              os = cliente.getOutputStream();
               os.write(b,0,b.length);
   
               noOfThreads++;
-
-
-              // System.out.println("Cliente conectado");
-
-              // Leo el mensaje que me envia
-              // String mensaje;
-              // mensaje = in.readUTF();
-              // System.out.println(mensaje);
-  
-              // Le envio un mensaje
-              // out.writeUTF("¡Hola mundo desde el servidor!");
      
               // cliente.close();
 
