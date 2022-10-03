@@ -34,13 +34,13 @@ public class Delegado{
             System.out.println("Se recibio mensaje " + mensaje);
             
             // Envio mensaje de confirmacion
-            outtxt.writeUTF("ACK desde el servidor-" + String.valueOf(tamArchivo)+"-"+nomArchivo);
+            outtxt.writeUTF("ACK desde el servidor-" + String.valueOf(tamArchivo));
 
             File file = new File("Lab3_Infracom_TCP/src/ArchivosEnviados/"+nomArchivo);
             MessageDigest mdigest = MessageDigest.getInstance("MD5");
     
             String hashArchivo = hash.checksum(mdigest, file);
-            System.out.println("El MD5 checksum de " + "Lab3_Infracom_TCP/src/ArchivosEnviados/"+nomArchivo + " es " + hashArchivo);
+            outtxt.writeUTF(hashArchivo);
 
             FileInputStream fr = new FileInputStream("Lab3_Infracom_TCP/src/ArchivosEnviados/"+nomArchivo);
             

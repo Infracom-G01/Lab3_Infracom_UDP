@@ -80,6 +80,7 @@ public class Cliente extends Thread{
             String[] aux = mensaje.split("-");
             int tamArchivo = Integer.parseInt(aux[1]);
 
+            String textHashArchivo = intxt.readUTF();
 
             //Recibir archivo
             fr = new FileOutputStream("Lab3_Infracom_TCP/src/ArchivosRecibidos/"+"Cliente"+String.valueOf(this.ID)+"-"+"Prueba-"+ String.valueOf(totalClientes)+".txt");
@@ -93,7 +94,17 @@ public class Cliente extends Thread{
             MessageDigest mdigest = MessageDigest.getInstance("MD5");
      
             String hashArchivo = hash.checksum(mdigest, file);
-            System.out.println("El MD5 checksum de " + "Lab3_Infracom_TCP/src/ArchivosRecibidos/"+"Cliente"+String.valueOf(this.ID)+"-"+"Prueba-"+ String.valueOf(totalClientes)+".txt" + " es " + hashArchivo);
+
+            if (textHashArchivo.equals(hashArchivo))
+            {
+                System.out.println("Se aseguro la integridad de el archivo enviado ya que: ");
+                System.out.println("Hash obtenido: " + textHashArchivo);
+                System.out.println("Hash calculado: " + hashArchivo);
+            }
+            else
+            {
+                System.out.println("No se puede asegurar la integridad del mensaje");
+            }
 
             sc.close();
 

@@ -1,13 +1,15 @@
 import java.util.Scanner;
 
-public class main {
+public class Main {
 
-    private static Log logPrueba = new Log();
+    //private static Log logPrueba = new Log();
     private static Scanner input = new Scanner(System.in);
-    //private static ArrayList<Cliente> listaClientes = new ArrayList<Cliente>();
 
     public static void main (String args[]) throws Throwable{
         
+        System.out.println("Digite el numero de la prueba que va a generar");
+        int NumPrueba = Integer.parseInt(input.nextLine());
+
         System.out.println("¿Cuantas conexiones desea que se generen? (Minimmo 25)");
         int NumClientes = Integer.parseInt(input.nextLine());
 
@@ -30,7 +32,7 @@ public class main {
         Cliente Cinicial = new Cliente(0);
         Cinicial.conexionInicial(NumClientes, tamArchivo, nomArchivo);
 
-        Cliente.establecerTotalClientes(NumClientes);
+        Cliente.establecerTotalClientes(NumPrueba);
 
         for(int i=1; i<=NumClientes; i++)
         {
