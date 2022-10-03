@@ -58,19 +58,24 @@ public class Cliente extends Thread{
             String mensaje = intxt.readUTF();
             System.out.println("Se recibio mensaje "+mensaje);
 
+            String[] aux = mensaje.split("-");
+            int tamArchivo = Integer.parseInt(aux[1]);
+            String nomArchivo= aux[2];
+
+
             //Recibir archivo
-            fr = new FileOutputStream("Lab3_Infracom_TCP/src/ArchivosRecibidos/Archivo250-"+ String.valueOf(this.ID) +".txt");
+            fr = new FileOutputStream("Lab3_Infracom_TCP/src/ArchivosRecibidos/"+ String.valueOf(this.ID) +"-"+ nomArchivo);
             
-            byte [] b = new byte [262144000];
+            byte [] b = new byte [tamArchivo];
             in.read(b,0,b.length);
             fr.write(b,0,b.length);
 
 
-            File file = new File("Lab3_Infracom_TCP/src/ArchivosRecibidos/Archivo250-"+ String.valueOf(this.ID) +".txt");
+            File file = new File("Lab3_Infracom_TCP/src/ArchivosRecibidos/"+ String.valueOf(this.ID) +"-"+ nomArchivo);
             MessageDigest mdigest = MessageDigest.getInstance("MD5");
      
             String hashArchivo = hash.checksum(mdigest, file);
-            System.out.println("El MD5 checksum de " + "Lab3_Infracom_TCP/src/ArchivosRecibidos/Archivo250-"+ String.valueOf(this.ID) +".txt" + " es " + hashArchivo);
+            System.out.println("El MD5 checksum de " + "Lab3_Infracom_TCP/src/ArchivosRecibidos/"+ String.valueOf(this.ID) +"-"+ nomArchivo + " es " + hashArchivo);
 
 
             sc.close();

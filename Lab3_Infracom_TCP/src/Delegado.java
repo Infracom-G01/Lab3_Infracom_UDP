@@ -1,55 +1,58 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
-public class Delegado extends Thread{
+public class Delegado{
     
     //***********************************************************
     //************************Atributos**************************
     //*********************************************************** 
 
-    int Id;
-    DataInputStream in;
-    DataOutputStream out;
-    Socket cliente;
-
-    //***********************************************************
-    //**********************Constructor**************************
-    //*********************************************************** 
-
-    public Delegado(int id, DataInputStream in, DataOutputStream out, Socket cliente) {
-        Id = id;
-        this.in = in;
-        this.out = out;
-        this.cliente=cliente;
-    }
+    private Hash hash = new Hash();
 
     //***********************************************************
     //***********************Funciones***************************
     //***********************************************************
 
-    @Override
-    public void run() 
+    public void envioDeArchivoYhash(Socket cliente, int tamArchivo, String nomArchivo)
     {
         try {
+            OutputStream os = cliente.getOutputStream();
+            DataInputStream intxt = new DataInputStream(cliente.getInputStream());
+            DataOutputStream outtxt = new DataOutputStream(os);
 
             System.out.println("Cliente conectado");
 
-            //Leo el mensaje que me envia
-            String mensaje;
-            mensaje = in.readUTF();
-            System.out.println(mensaje);
+            // Leo el mensaje que me envia
+            String mensaje = intxt.readUTF();
+            System.out.println("Se recibio mensaje " + mensaje);
+            
+            // Envio mensaje de confirmacion
+            outtxt.writeUTF("ACK desde el servidor-" + String.valueOf(tamArchivo)+"-"+nomArchivo);
 
-            //Le envio un mensaje
-            out.writeUTF("¡Hola mundo desde el servidor!");
-   
-            cliente.close();
+            File file = new File("Lab3_Infracom_TCP/src/ArchivosEnviados/"+nomArchivo);
+            MessageDigest mdigest = MessageDigest.getInstance("MD5");
+    
+            String hashArchivo = hash.checksum(mdigest, file);
+            System.out.println("El MD5 checksum de " + "Lab3_Infracom_TCP/src/ArchivosEnviados/"+nomArchivo + " es " + hashArchivo);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Algo pasó y se murió");
+            FileInputStream fr = new FileInputStream("Lab3_Infracom_TCP/src/ArchivosEnviados/"+nomArchivo);
+            
+            byte [] b = new byte[tamArchivo];
+            fr.read(b,0,b.length);
+            outtxt.write(b,0,b.length);
+
+            fr.close();
+
+        } catch (IOException | NoSuchAlgorithmException e) {
+            //e.printStackTrace();
         }
-
+    
     }
 }
