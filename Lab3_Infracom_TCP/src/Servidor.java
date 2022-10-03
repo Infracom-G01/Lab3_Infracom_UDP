@@ -1,6 +1,8 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -14,8 +16,8 @@ public class Servidor {
     private int Port = 5000; //Puerto FTP debe ser 21 o 22
     private ServerSocket serverSocket; 
     boolean serverRunning = true;
-    DataInputStream in;
-    DataOutputStream out;
+    FileInputStream fr;
+    OutputStream os;
 
     //***********************************************************
     //**********************Constructor**************************
@@ -50,29 +52,34 @@ public class Servidor {
               Socket cliente = serverSocket.accept();
               System.out.println("New connection received" );
   
-              in = new DataInputStream(cliente.getInputStream());
-              out = new DataOutputStream(cliente.getOutputStream());
+              //in = new DataInputStream(cliente.getInputStream());
+              //out = new DataOutputStream(cliente.getOutputStream());
               
-              System.out.println("Se creo el in y el out" );
+              fr = new FileInputStream("Lab3_Infracom_TCP/src/ArchivosEnviados/og.txt");
+              byte [] b = new byte[20002];
+              fr.read(b,0,b.length);
+
+              os = cliente.getOutputStream();
+              os.write(b,0,b.length);
   
               noOfThreads++;
 
 
-              System.out.println("Cliente conectado");
+              // System.out.println("Cliente conectado");
 
-              //Leo el mensaje que me envia
-              String mensaje;
-              mensaje = in.readUTF();
-              System.out.println(mensaje);
+              // Leo el mensaje que me envia
+              // String mensaje;
+              // mensaje = in.readUTF();
+              // System.out.println(mensaje);
   
-              //Le envio un mensaje
-              out.writeUTF("¡Hola mundo desde el servidor!");
+              // Le envio un mensaje
+              // out.writeUTF("¡Hola mundo desde el servidor!");
      
-              cliente.close();
+              // cliente.close();
 
-              //System.out.println(noOfThreads );
-              //Delegado D = new Delegado(noOfThreads, in, out, cliente);
-              //listaDelegados.add(D);
+              // System.out.println(noOfThreads );
+              // Delegado D = new Delegado(noOfThreads, in, out, cliente);
+              // listaDelegados.add(D);
 
               
             } catch (IOException e) {

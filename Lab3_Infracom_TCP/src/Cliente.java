@@ -1,6 +1,6 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,8 +14,8 @@ public class Cliente extends Thread{
     private int ID;
     final String HOST = "localhost";
     final int PUERTO = 5000;
-    DataInputStream in;
-    DataOutputStream out;
+    InputStream in;
+    FileOutputStream fr;
 
     //***********************************************************
     //**********************Constructor**************************
@@ -36,18 +36,20 @@ public class Cliente extends Thread{
         try {
             //Creo el socket para conectarme con el cliente
             Socket sc = new Socket(HOST, PUERTO);
- 
-            in = new DataInputStream(sc.getInputStream());
-            out = new DataOutputStream(sc.getOutputStream());
+            
+            in = sc.getInputStream();
+            fr = new FileOutputStream("Lab3_Infracom_TCP/src/ArchivosRecibidos/recibido.txt");
             
             //Envio un mensaje al cliente
-            out.writeUTF("¡Hola mundo desde el cliente!" + Integer.toString(ID));
+            //out.writeUTF("¡Hola mundo desde el cliente!" + Integer.toString(ID));
  
             //Recibo el mensaje del servidor
-            String mensaje = in.readUTF();
+            //String mensaje = in.readUTF();
  
-            System.out.println(mensaje);
- 
+            //System.out.println(mensaje);
+            byte [] b = new byte [20002];
+            in.read(b,0,b.length);
+            fr.write(b,0,b.length);
             sc.close();
  
         } catch (IOException ex) {
