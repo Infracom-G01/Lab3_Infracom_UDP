@@ -50,6 +50,8 @@ public class Delegado{
 
             fr.close();
 
+            cliente.close();
+
         } catch (IOException | NoSuchAlgorithmException e) {
             //e.printStackTrace();
         }

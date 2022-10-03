@@ -16,13 +16,14 @@ public class Cliente extends Thread{
     //*********************************************************** 
 
     private int ID;
-    final String HOST = "localhost";
-    final int PUERTO = 5000;
-    DataInputStream intxt;
-    DataOutputStream outtxt;
-    InputStream in;
-    FileOutputStream fr;
-    Hash hash = new Hash();
+    private final String HOST = "localhost";
+    private final int PUERTO = 5000;
+
+    private DataInputStream intxt;
+    private DataOutputStream outtxt;
+    private InputStream in;
+    private FileOutputStream fr;
+    private Hash hash = new Hash();
 
     //***********************************************************
     //**********************Constructor**************************
@@ -37,6 +38,19 @@ public class Cliente extends Thread{
     //***********************Funciones***************************
     //***********************************************************
 
+    public void conexionInicial(int NumClientes, int tamArchivo, String nomArchivo) throws IOException
+    {
+        Socket sc = new Socket(HOST, PUERTO);
+
+        outtxt = new DataOutputStream(sc.getOutputStream());
+
+        //Envio un mensaje al cliente
+        outtxt.writeUTF(String.valueOf(NumClientes)+"-"+String.valueOf(tamArchivo)+"-"+nomArchivo);
+      
+        sc.close();
+    }
+
+
     @Override
     public void run() 
     {
@@ -44,17 +58,15 @@ public class Cliente extends Thread{
             //Creo el socket para conectarme con el cliente
             Socket sc = new Socket(HOST, PUERTO);
             
-
             in = sc.getInputStream();
 
             intxt = new DataInputStream(in);
             outtxt = new DataOutputStream(sc.getOutputStream());
 
             //Envio un mensaje al cliente
-            outtxt.writeUTF("¡Hola mundo desde el cliente!" + Integer.toString(ID));
+            outtxt.writeUTF("¡Hola mundo desde el cliente " + Integer.toString(ID)+"!");
 
             // Recibir mensaje confirmacion del servidor
-
             String mensaje = intxt.readUTF();
             System.out.println("Se recibio mensaje "+mensaje);
 
@@ -76,7 +88,6 @@ public class Cliente extends Thread{
      
             String hashArchivo = hash.checksum(mdigest, file);
             System.out.println("El MD5 checksum de " + "Lab3_Infracom_TCP/src/ArchivosRecibidos/"+ String.valueOf(this.ID) +"-"+ nomArchivo + " es " + hashArchivo);
-
 
             sc.close();
 
