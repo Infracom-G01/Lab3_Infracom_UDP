@@ -1,10 +1,12 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 
 public class Servidor {
@@ -20,12 +22,13 @@ public class Servidor {
     OutputStream os;
     DataInputStream intxt;
     DataOutputStream outtxt;
+    Hash hash = new Hash();
 
     //***********************************************************
     //**********************Constructor**************************
     //*********************************************************** 
 
-    public Servidor() {
+    public Servidor() throws Exception {
 
         try {
           serverSocket = new ServerSocket(Port);
@@ -67,13 +70,23 @@ public class Servidor {
               // Envio mensaje de confirmacion
               outtxt.writeUTF("ACK desde el servidor");
 
-              fr = new FileInputStream("Lab3_Infracom_TCP/src/ArchivosEnviados/og.txt");
-              byte [] b = new byte[20002];
-              fr.read(b,0,b.length);
 
-              os.write(b,0,b.length);
+
+              File file = new File("Lab3_Infracom_TCP/src/ArchivosEnviados/Archivo250.txt");
+              MessageDigest mdigest = MessageDigest.getInstance("MD5");
+       
+              String hashArchivo = hash.checksum(mdigest, file);
+              System.out.println("El MD5 checksum de " + "Lab3_Infracom_TCP/src/ArchivosEnviados/Archivo250.txt" + " es " + hashArchivo);
+
+              fr = new FileInputStream("Lab3_Infracom_TCP/src/ArchivosEnviados/Archivo250.txt");
+              
+              byte [] b = new byte[262144000];
+              fr.read(b,0,b.length);
+              outtxt.write(b,0,b.length);
   
               noOfThreads++;
+
+              System.out.println(noOfThreads);
      
               // cliente.close();
 
@@ -105,7 +118,7 @@ public class Servidor {
     //***********************Funciones***************************
     //***********************************************************
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         new Servidor();
       }
 }

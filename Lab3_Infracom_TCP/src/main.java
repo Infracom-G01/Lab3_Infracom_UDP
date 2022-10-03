@@ -27,7 +27,9 @@ public class main {
         //System.out.println(x.hashCode());
         
         Cliente C=new Cliente(1);
+        Cliente C2=new Cliente(2);
         C.start();
+        C2.start();
 
         
 	}
