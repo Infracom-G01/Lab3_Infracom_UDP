@@ -16,6 +16,8 @@ public class Cliente extends Thread{
     //*********************************************************** 
 
     private int ID;
+    private static int totalClientes;
+
     private final String HOST = "localhost";
     private final int PUERTO = 5000;
 
@@ -32,6 +34,11 @@ public class Cliente extends Thread{
     public Cliente(int iD) {
         ID = iD;
 
+    }
+
+    public static void establecerTotalClientes(int totalC)
+    {
+        totalClientes=totalC;
     }
 
     //***********************************************************
@@ -72,22 +79,21 @@ public class Cliente extends Thread{
 
             String[] aux = mensaje.split("-");
             int tamArchivo = Integer.parseInt(aux[1]);
-            String nomArchivo= aux[2];
 
 
             //Recibir archivo
-            fr = new FileOutputStream("Lab3_Infracom_TCP/src/ArchivosRecibidos/"+ String.valueOf(this.ID) +"-"+ nomArchivo);
+            fr = new FileOutputStream("Lab3_Infracom_TCP/src/ArchivosRecibidos/"+"Cliente"+String.valueOf(this.ID)+"-"+"Prueba-"+ String.valueOf(totalClientes)+".txt");
             
             byte [] b = new byte [tamArchivo];
             in.read(b,0,b.length);
             fr.write(b,0,b.length);
 
 
-            File file = new File("Lab3_Infracom_TCP/src/ArchivosRecibidos/"+ String.valueOf(this.ID) +"-"+ nomArchivo);
+            File file = new File("Lab3_Infracom_TCP/src/ArchivosRecibidos/"+"Cliente"+String.valueOf(this.ID)+"-"+"Prueba-"+ String.valueOf(totalClientes)+".txt");
             MessageDigest mdigest = MessageDigest.getInstance("MD5");
      
             String hashArchivo = hash.checksum(mdigest, file);
-            System.out.println("El MD5 checksum de " + "Lab3_Infracom_TCP/src/ArchivosRecibidos/"+ String.valueOf(this.ID) +"-"+ nomArchivo + " es " + hashArchivo);
+            System.out.println("El MD5 checksum de " + "Lab3_Infracom_TCP/src/ArchivosRecibidos/"+"Cliente"+String.valueOf(this.ID)+"-"+"Prueba-"+ String.valueOf(totalClientes)+".txt" + " es " + hashArchivo);
 
             sc.close();
 

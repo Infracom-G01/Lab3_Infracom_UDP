@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class main {
@@ -31,7 +30,7 @@ public class main {
         Cliente Cinicial = new Cliente(0);
         Cinicial.conexionInicial(NumClientes, tamArchivo, nomArchivo);
 
-
+        Cliente.establecerTotalClientes(NumClientes);
 
         for(int i=1; i<=NumClientes; i++)
         {
