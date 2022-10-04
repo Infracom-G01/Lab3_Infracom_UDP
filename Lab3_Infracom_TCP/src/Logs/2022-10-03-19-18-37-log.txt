@@ -1,0 +1,5 @@
+Archivo100.txt
+Tamanio archivo 104857600B
+Se genero la conexion para el cliente con ID 1
+La entrega fue exitosa
+Tiempo de tranferencia: 375 Ms

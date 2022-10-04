@@ -1,0 +1,3 @@
+Archivo100.txt
+Tamanio archivo 104857600B
+Se genero la conexion para el cliente con ID 1

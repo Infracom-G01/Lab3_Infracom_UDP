@@ -20,7 +20,7 @@ public class Cliente extends Thread{
     private int ID;
     private static int totalClientes;
 
-    private final String HOST = "localhost";
+    private final String HOST = "192.168.106.128";
     private final int PUERTO = 5000;
 
     private DataInputStream intxt;
