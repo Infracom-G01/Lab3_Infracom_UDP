@@ -66,7 +66,6 @@ public class Delegado{
             
             outtxt.write(b,0,b.length);
 
-            //FALTA ARREGLAR EXITO Y TIEMPO EN TRANFERENCIA
             String exito = intxt.readUTF();
             System.out.println(exito);
 

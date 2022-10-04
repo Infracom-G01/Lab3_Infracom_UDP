@@ -27,20 +27,12 @@ public class Hash {
         // store the bytes returned by the digest() method
         byte[] bytes = digest.digest();
  
-        // this array of bytes has bytes in decimal format
-        // so we need to convert it into hexadecimal format
- 
-        // for this we create an object of StringBuilder
-        // since it allows us to update the string i.e. its
-        // mutable
         StringBuilder sb = new StringBuilder();
        
         // loop through the bytes array
         for (int i = 0; i < bytes.length; i++) {
            
-            // the following line converts the decimal into
-            // hexadecimal format and appends that to the
-            // StringBuilder object
+
             sb.append(Integer
                     .toString((bytes[i] & 0xff) + 0x100, 16)
                     .substring(1));

@@ -11,7 +11,6 @@ public class Log {
 	
 	public void GenerarLog(String nomLog, String contenido) {	
 
-
 		File archivoCodigo;
 		FileWriter escribir;
 		PrintWriter linea;

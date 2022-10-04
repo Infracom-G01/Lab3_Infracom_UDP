@@ -10,7 +10,7 @@ public class Servidor {
     //************************Atributos**************************
     //*********************************************************** 
 
-    private int Port = 5000; //Puerto FTP debe ser 21 o 22
+    private int Port = 5000; 
     private ServerSocket serverSocket; 
     private boolean serverRunning = true;
     private Delegado delegado = new Delegado();
@@ -41,7 +41,6 @@ public class Servidor {
       String nomArchivo = aux[2];
 
       clienteInical.close();
-  
 
       //Conexiones restantes
       while (serverRunning) {
@@ -53,6 +52,7 @@ public class Servidor {
           {
             delegado.envioDeArchivoYhash(listaClientes.get(i), tamArchivo, nomArchivo);;
           }
+          
           noOfThreads=0;
         }
 
