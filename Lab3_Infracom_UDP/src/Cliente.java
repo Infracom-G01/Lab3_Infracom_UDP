@@ -4,12 +4,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.security.MessageDigest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.sound.sampled.Port;
 
 public class Cliente extends Thread{
 
@@ -20,7 +25,7 @@ public class Cliente extends Thread{
     private int ID;
     private static int totalClientes;
 
-    private final String HOST = "192.168.106.128";
+    private final String HOST = "localhost";//"192.168.106.128";
     private final int PUERTO = 5000;
 
     private DataInputStream intxt;
@@ -51,16 +56,28 @@ public class Cliente extends Thread{
 
     public void conexionInicial(int NumClientes, int tamArchivo, String nomArchivo) throws IOException
     {
-        Socket sc = new Socket(HOST, PUERTO);
+        //Crear buffer :) - hola nick
+        byte[] buffer = new byte[100];
 
-        outtxt = new DataOutputStream(sc.getOutputStream());
+        //Obtengo la localizacion de localhost
+        InetAddress direccionServidor = InetAddress.getByName("localhost");
 
-        //Envio un mensaje al cliente
-        outtxt.writeUTF(String.valueOf(NumClientes)+"-"+String.valueOf(tamArchivo)+"-"+nomArchivo);
-      
-        sc.close();
+        //Creo el socket de UDP
+        DatagramSocket socketUDP = new DatagramSocket();
+        
+        //Envio un mensaje de config al servidor
+        String mensaje = String.valueOf(NumClientes)+"-"+String.valueOf(tamArchivo)+"-"+nomArchivo;
+        buffer = mensaje.getBytes();
+
+        //Creo un datagrama
+        DatagramPacket pregunta = new DatagramPacket(buffer, buffer.length, direccionServidor, PUERTO);
+
+        //Lo envio con send
+        System.out.println("Envio el datagrama");
+        socketUDP.send(pregunta);
+
+        socketUDP.close();
     }
-
 
     @Override
     public void run() 

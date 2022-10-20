@@ -1,3 +1,4 @@
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -11,7 +12,7 @@ public class Auxcli {
         //puerto del servidor
         final int PUERTO_SERVIDOR = 5000;
         //buffer donde se almacenara los mensajes
-        byte[] buffer = new byte[1024];
+        byte[] buffer = new byte[10];
  
         try {
             //Obtengo la localizacion de localhost
@@ -31,7 +32,8 @@ public class Auxcli {
             //Lo envio con send
             System.out.println("Envio el datagrama");
             socketUDP.send(pregunta);
- 
+
+            buffer = new byte[10];
             //Preparo la respuesta
             DatagramPacket peticion = new DatagramPacket(buffer, buffer.length);
  
@@ -39,8 +41,14 @@ public class Auxcli {
             socketUDP.receive(peticion);
             System.out.println("Recibo la peticion");
  
-            //Cojo los datos y lo muestro
-            mensaje = new String(peticion.getData());
+            FileOutputStream fr = new FileOutputStream("Lab3_Infracom_UDP/src/ArchivosRecibidos/"+"Cliente.txt");
+            byte[] archivo = peticion.getData();
+
+            System.out.println(new String(peticion.getData()));
+
+            fr.write(archivo);
+            fr.close();
+            
             System.out.println(mensaje);
  
             //cierro el socket

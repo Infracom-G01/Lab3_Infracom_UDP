@@ -3,13 +3,16 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.nio.file.Files;
+import java.nio.file.Path; 
+import java.nio.file.Paths; 
 
 public class Auxser {
 
     public static void main(String[] args) {
  
         final int PUERTO = 5000;
-        byte[] buffer = new byte[1024];
+        byte[] buffer = new byte[10];
  
         try {
             System.out.println("Iniciado el servidor UDP");
@@ -35,8 +38,11 @@ public class Auxser {
                 int puertoCliente = peticion.getPort();
                 InetAddress direccion = peticion.getAddress();
  
-                mensaje = "¡Hola mundo desde el servidor!";
-                buffer = mensaje.getBytes();
+                //mensaje = "¡Hola mundo desde el servidor!";
+                //buffer = mensaje.getBytes();
+
+                Path path = Paths.get("Lab3_Infracom_UDP/src/ArchivosEnviados/og.txt");
+                buffer = Files.readAllBytes(path); 
  
                 //creo el datagrama
                 DatagramPacket respuesta = new DatagramPacket(buffer, buffer.length, direccion, puertoCliente);

@@ -33,11 +33,12 @@ public class Main{
 
       Cliente.establecerTotalClientes(NumPrueba);
 
-      for(int i=1; i<=NumClientes; i++)
-      {
-          Cliente C=new Cliente(i);
-          C.start();
-      }
+
+      // for(int i=1; i<=NumClientes; i++)
+      // {
+      //     Cliente C=new Cliente(i);
+      //     C.start();
+      // }
                
 	}
 }
