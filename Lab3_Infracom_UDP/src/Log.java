@@ -14,7 +14,7 @@ public class Log {
 		File archivoCodigo;
 		FileWriter escribir;
 		PrintWriter linea;
-		archivoCodigo = new File("Lab3_Infracom_TCP/src/Logs/"+nomLog +".txt");
+		archivoCodigo = new File("Lab3_Infracom_UDP/src/Logs/"+nomLog +".txt");
 		
 		if(!archivoCodigo.exists()) {
 			try {

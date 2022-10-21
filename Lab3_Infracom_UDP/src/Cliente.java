@@ -14,8 +14,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.sound.sampled.Port;
-
 public class Cliente extends Thread{
 
     //***********************************************************

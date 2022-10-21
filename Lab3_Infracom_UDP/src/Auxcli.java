@@ -33,18 +33,38 @@ public class Auxcli {
             System.out.println("Envio el datagrama");
             socketUDP.send(pregunta);
 
-            buffer = new byte[10];
-            //Preparo la respuesta
-            DatagramPacket peticion = new DatagramPacket(buffer, buffer.length);
- 
-            //Recibo la respuesta
-            socketUDP.receive(peticion);
-            System.out.println("Recibo la peticion");
- 
-            FileOutputStream fr = new FileOutputStream("Lab3_Infracom_UDP/src/ArchivosRecibidos/"+"Cliente.txt");
-            byte[] archivo = peticion.getData();
 
-            System.out.println(new String(peticion.getData()));
+            byte[] archivo = new byte[0];
+            
+            int i = 0;
+            int bytesReceived = 0;
+            while (bytesReceived<262144000)
+            {
+                buffer = new byte[64000];
+                DatagramPacket peticion = new DatagramPacket(buffer, buffer.length);
+
+                socketUDP.receive(peticion);
+                System.out.println("Recibo la peticion");
+
+                byte[] chunksArchivo = peticion.getData();
+                
+
+                byte[] res = new byte[ archivo.length + chunksArchivo.length ];
+
+                System.arraycopy( archivo, 0, res, 0, archivo.length);
+                System.arraycopy( chunksArchivo, 0, res, archivo.length, chunksArchivo.length );
+
+                archivo = res;
+
+                bytesReceived+=64000;
+
+                i+=1;
+                System.out.println("Voy en");
+                System.out.println(i);
+            }
+
+
+            FileOutputStream fr = new FileOutputStream("Lab3_Infracom_UDP/src/ArchivosRecibidos/"+"Cliente.txt");
 
             fr.write(archivo);
             fr.close();

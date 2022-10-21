@@ -9,10 +9,10 @@ import java.nio.file.Paths;
 
 public class Auxser {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
  
         final int PUERTO = 5000;
-        byte[] buffer = new byte[10];
+        byte[] buffer = new byte[262144000];
  
         try {
             System.out.println("Iniciado el servidor UDP");
@@ -41,15 +41,33 @@ public class Auxser {
                 //mensaje = "¡Hola mundo desde el servidor!";
                 //buffer = mensaje.getBytes();
 
-                Path path = Paths.get("Lab3_Infracom_UDP/src/ArchivosEnviados/og.txt");
+                Path path = Paths.get("Lab3_Infracom_UDP/src/ArchivosEnviados/Archivo250.txt");
                 buffer = Files.readAllBytes(path); 
  
                 //creo el datagrama
-                DatagramPacket respuesta = new DatagramPacket(buffer, buffer.length, direccion, puertoCliente);
- 
+                DatagramPacket respuesta = new DatagramPacket(buffer, 64000, direccion, puertoCliente);
+
+                int bytesSent = 0;
+                while (bytesSent < buffer.length) {
+
+                    socketUDP.send(respuesta);
+                    bytesSent += respuesta.getLength( );
+
+                    if ((262144000-bytesSent)>64000)
+                    {
+                        respuesta.setData(buffer, bytesSent, 64000);
+                    }
+                    else
+                    {
+                        respuesta.setData(buffer, bytesSent, (262144000-bytesSent));
+                    }
+
+                    Thread.sleep(50);
+                }
+
                 //Envio la información
                 System.out.println("Envio la informacion del cliente");
-                socketUDP.send(respuesta);
+                //socketUDP.send(respuesta);
                  
             }
  
