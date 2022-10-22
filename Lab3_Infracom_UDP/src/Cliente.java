@@ -21,6 +21,7 @@ public class Cliente extends Thread{
 
     private final String HOST = "localhost";//"192.168.106.128";
     private final int PUERTO = 5000;
+    private int tamChunk = 64000;
 
     private FileOutputStream fr;
     
@@ -105,7 +106,7 @@ public class Cliente extends Thread{
             int bytesReceived = 0;
             while (bytesReceived<tamArchivo)
             {
-                buffer = new byte[64000];
+                buffer = new byte[tamChunk];
                 DatagramPacket peticion = new DatagramPacket(buffer, buffer.length);
 
                 socketUDP.receive(peticion);
@@ -121,7 +122,7 @@ public class Cliente extends Thread{
 
                 archivo = res;
 
-                bytesReceived+=64000;
+                bytesReceived+=tamChunk;
 
                 i+=1;
                 System.out.print("Voy en: ");

@@ -16,6 +16,7 @@ public class Delegado{
     //*********************************************************** 
 
     private Log logPrueba = new Log();
+    private int tamChunk = 64000;
 
     //***********************************************************
     //***********************Funciones***************************
@@ -36,10 +37,11 @@ public class Delegado{
             int puertoCliente = peticion.getPort();
             InetAddress direccion = peticion.getAddress();
 
-            Path path = Paths.get("Lab3_Infracom_UDP/src/ArchivosEnviados/Archivo250.txt");
+            Path path = Paths.get("Lab3_Infracom_UDP/src/ArchivosEnviados/"+nomArchivo);
+            System.out.println("Lab3_Infracom_UDP/src/ArchivosEnviados/"+nomArchivo);
             buffer = Files.readAllBytes(path); 
 
-            DatagramPacket respuesta = new DatagramPacket(buffer, 64000, direccion, puertoCliente);
+            DatagramPacket respuesta = new DatagramPacket(buffer, tamChunk, direccion, puertoCliente);
 
             // enviar archivo 
             long startTime = System.currentTimeMillis();
@@ -49,17 +51,18 @@ public class Delegado{
             while (bytesSent < tamArchivo) {
 
                 socketUDP.send(respuesta);
-                bytesSent += 64000;
-
+                
+                bytesSent += tamChunk;
                 if ((tamArchivo-bytesSent)>0)
                 {
-                    respuesta.setData(buffer, bytesSent, 64000);
+                    respuesta.setData(buffer, bytesSent, tamChunk);
                 }
                 else
                 {
-                    respuesta.setData(buffer, bytesSent, (tamArchivo-bytesSent+64000));
+                    respuesta.setData(buffer, bytesSent, (tamArchivo-bytesSent+tamChunk));
                 }
-
+                
+                
                 Thread.sleep(50);
             }
 

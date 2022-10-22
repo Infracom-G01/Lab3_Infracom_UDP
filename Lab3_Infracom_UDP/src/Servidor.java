@@ -14,6 +14,7 @@ public class Servidor {
     //private ServerSocket serverSocket; 
     private boolean serverRunning = true;
     private Delegado delegado = new Delegado();
+    
 
     //***********************************************************
     //**********************Constructor**************************
