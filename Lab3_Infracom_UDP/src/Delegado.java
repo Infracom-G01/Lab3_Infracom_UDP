@@ -51,18 +51,19 @@ public class Delegado{
             while (bytesSent < tamArchivo) {
 
                 socketUDP.send(respuesta);
-                
                 bytesSent += tamChunk;
-                if ((tamArchivo-bytesSent)>0)
+            
+                if ((tamArchivo-bytesSent)>tamChunk)
                 {
                     respuesta.setData(buffer, bytesSent, tamChunk);
                 }
                 else
                 {
-                    respuesta.setData(buffer, bytesSent, (tamArchivo-bytesSent+tamChunk));
+                    bytesSent += tamArchivo-bytesSent;
+                    respuesta.setData(buffer, bytesSent, (tamArchivo-bytesSent));
+                    socketUDP.send(respuesta);
                 }
-                
-                
+
                 Thread.sleep(50);
             }
 
@@ -79,8 +80,8 @@ public class Delegado{
             logPrueba.GenerarLog(nombreLog, nomArchivo);
             logPrueba.GenerarLog(nombreLog, "Tamanio archivo " + String.valueOf(tamArchivo) + "B");
             logPrueba.GenerarLog(nombreLog, "Se genero la conexion para el cliente con ID "+numCliente);
-            logPrueba.GenerarLog(nombreLog, "La entrega fue exitosa");
-            logPrueba.GenerarLog(nombreLog, "Tiempo de tranferencia: "+String.valueOf(elapsedTime)+" Ms");
+            logPrueba.GenerarLog(nombreLog, "La transferencia fue exitosa");
+            logPrueba.GenerarLog(nombreLog, "Tiempo de transferencia: "+String.valueOf(elapsedTime)+" Ms");
             
         } catch (IOException e) {
             e.printStackTrace();

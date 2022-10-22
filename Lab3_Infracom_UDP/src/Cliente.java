@@ -146,8 +146,8 @@ public class Cliente extends Thread{
             logPrueba.GenerarLog(nombreLog, nomArchivo);
             logPrueba.GenerarLog(nombreLog, "Tamanio archivo " + String.valueOf(tamArchivo) + "B");
             logPrueba.GenerarLog(nombreLog, "Se genero la conexion para el cliente con ID "+ID);
-            logPrueba.GenerarLog(nombreLog, "La entrega fue exitosa");
-            logPrueba.GenerarLog(nombreLog, "Tiempo de tranferencia: "+String.valueOf(elapsedTime)+" Ms");
+            logPrueba.GenerarLog(nombreLog, "La transferencia fue exitosa");
+            logPrueba.GenerarLog(nombreLog, "Tiempo de transferencia: "+String.valueOf(elapsedTime)+" Ms");
             socketUDP.close();
 
         } catch (IOException ex) {
