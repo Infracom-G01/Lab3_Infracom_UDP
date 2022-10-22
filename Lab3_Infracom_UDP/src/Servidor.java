@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 
 public class Servidor {
@@ -42,9 +41,7 @@ public class Servidor {
       int tamArchivo = Integer.parseInt(aux[1]);
       String nomArchivo = aux[2];
 
-      socketUDP.close();
-
-      ArrayList<Socket> listaClientes = new ArrayList<Socket>(); 
+      ArrayList<DatagramPacket> listaClientes = new ArrayList<DatagramPacket>(); 
       int noOfThreads = 0;
 
       //Conexiones restantes
@@ -55,19 +52,23 @@ public class Servidor {
 
           for (int i = 0; i<listaClientes.size(); i++)
           {
-            delegado.envioDeArchivoYhash(listaClientes.get(i), tamArchivo, nomArchivo);;
+            delegado.envioDeArchivo(socketUDP, listaClientes.get(i), tamArchivo, nomArchivo);
           }
           
           noOfThreads=0;
+          serverRunning=false;
         }
 
         else
         {
           try {
-            Socket cliente = serverSocket.accept();
-            System.out.println("New connection received" );
             
-            listaClientes.add(cliente);
+            buffer = new byte[tamArchivo];
+            peticion = new DatagramPacket(buffer, buffer.length);
+
+            socketUDP.receive(peticion);    
+            
+            listaClientes.add(peticion);
             noOfThreads++;    
             
           } catch (IOException e) {

@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class main{
 
     private static Scanner input = new Scanner(System.in);
-  
+
     public static void main (String args[]) throws Throwable{
         
       System.out.println("Digite el numero de la prueba que va a generar");
@@ -28,17 +28,16 @@ public class main{
         nomArchivo= "Archivo250.txt";
       }
 
-      Cliente Cinicial = new Cliente(0);
+      Cliente Cinicial = new Cliente(0, tamArchivo, nomArchivo);
       Cinicial.conexionInicial(NumClientes, tamArchivo, nomArchivo);
 
       Cliente.establecerTotalClientes(NumPrueba);
 
 
-      // for(int i=1; i<=NumClientes; i++)
-      // {
-      //     Cliente C=new Cliente(i);
-      //     C.start();
-      // }
-               
+      for(int i=1; i<=NumClientes; i++)
+      {
+          Cliente C=new Cliente(i, tamArchivo, nomArchivo);
+          C.start();
+      }
 	}
 }

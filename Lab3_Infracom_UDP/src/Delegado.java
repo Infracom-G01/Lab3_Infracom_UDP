@@ -1,15 +1,12 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-//import javax.management.timer.Timer;
+import java.nio.file.Files;
+import java.nio.file.Path; 
+import java.nio.file.Paths; 
 
 
 public class Delegado{
@@ -18,40 +15,55 @@ public class Delegado{
     //************************Atributos**************************
     //*********************************************************** 
 
-    private Hash hash = new Hash();
-    //private Timer timer = new Timer();
     private Log logPrueba = new Log();
 
     //***********************************************************
     //***********************Funciones***************************
     //***********************************************************
 
-    public void envioDeArchivoYhash(Socket cliente, int tamArchivo, String nomArchivo) throws IOException
+    public void envioDeArchivo(DatagramSocket socketUDP, DatagramPacket peticion, int tamArchivo, String nomArchivo) throws IOException, InterruptedException
     {
-        try {
-            OutputStream os = cliente.getOutputStream();
-            DataInputStream intxt = new DataInputStream(cliente.getInputStream());
-            DataOutputStream outtxt = new DataOutputStream(os);
+        
+        byte[] buffer = new byte[tamArchivo];
 
+        try {
             System.out.println("Cliente conectado");
 
             // Leo el mensaje que me envia
-            String mensaje = intxt.readUTF();
+            String mensaje = new String(peticion.getData());
             System.out.println("Se recibio mensaje " + mensaje);
             
-            // Envio mensaje de confirmacion
-            outtxt.writeUTF("ACK desde el servidor-" + String.valueOf(tamArchivo)+"-"+nomArchivo);
+            int puertoCliente = peticion.getPort();
+            InetAddress direccion = peticion.getAddress();
 
-            File file = new File("Lab3_Infracom_TCP/src/ArchivosEnviados/"+nomArchivo);
-            MessageDigest mdigest = MessageDigest.getInstance("MD5");
-    
-            String hashArchivo = hash.checksum(mdigest, file);
-            outtxt.writeUTF(hashArchivo);
+            Path path = Paths.get("Lab3_Infracom_UDP/src/ArchivosEnviados/Archivo250.txt");
+            buffer = Files.readAllBytes(path); 
 
-            FileInputStream fr = new FileInputStream("Lab3_Infracom_TCP/src/ArchivosEnviados/"+nomArchivo);
-            
-            byte [] b = new byte[tamArchivo];
-            fr.read(b,0,b.length);
+            DatagramPacket respuesta = new DatagramPacket(buffer, 64000, direccion, puertoCliente);
+
+            // enviar archivo 
+            long startTime = System.currentTimeMillis();
+            long elapsedTime = 0L;
+
+            int bytesSent = 0;
+            while (bytesSent < tamArchivo) {
+
+                socketUDP.send(respuesta);
+                bytesSent += 64000;
+
+                if ((tamArchivo-bytesSent)>0)
+                {
+                    respuesta.setData(buffer, bytesSent, 64000);
+                }
+                else
+                {
+                    respuesta.setData(buffer, bytesSent, (tamArchivo-bytesSent+64000));
+                }
+
+                Thread.sleep(50);
+            }
+
+            elapsedTime = System.currentTimeMillis() - startTime;
 
             // Información para el log
             LocalDateTime date = LocalDateTime.now();
@@ -60,20 +72,15 @@ public class Delegado{
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
             String nombreLog = dtf.format(date) + "-log";
 
+            logPrueba.GenerarLog(nombreLog, "Delegado");
             logPrueba.GenerarLog(nombreLog, nomArchivo);
             logPrueba.GenerarLog(nombreLog, "Tamanio archivo " + String.valueOf(tamArchivo) + "B");
             logPrueba.GenerarLog(nombreLog, "Se genero la conexion para el cliente con ID "+numCliente);
+            logPrueba.GenerarLog(nombreLog, "La entrega fue exitosa");
+            logPrueba.GenerarLog(nombreLog, "Tiempo de tranferencia: "+String.valueOf(elapsedTime)+" Ms");
             
-            outtxt.write(b,0,b.length);
-
-            String exito = intxt.readUTF();
-            System.out.println(exito);
-
-            fr.close();
-            cliente.close();            
-
-        } catch (IOException | NoSuchAlgorithmException e) {
-            //e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
