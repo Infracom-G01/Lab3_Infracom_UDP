@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.ServerSocket;
+//import java.net.ServerSocket;
 import java.util.ArrayList;
 
 public class Servidor {
@@ -11,7 +11,7 @@ public class Servidor {
     //*********************************************************** 
 
     private int PUERTO = 5000; 
-    private ServerSocket serverSocket; 
+    //private ServerSocket serverSocket; 
     private boolean serverRunning = true;
     private Delegado delegado = new Delegado();
 
@@ -79,14 +79,14 @@ public class Servidor {
 
       }
   
-      try {
-        serverSocket.close();
-        System.out.println("Server was stopped");
+      // try {
+      //   serverSocket.close();
+      //   System.out.println("Server was stopped");
   
-      } catch (IOException e) {
-        System.out.println("Problem stopping server");
-        System.exit(-1);
-      }
+      // } catch (IOException e) {
+      //   System.out.println("Problem stopping server");
+      //   System.exit(-1);
+      // }
     
     }
 

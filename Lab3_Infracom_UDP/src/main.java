@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class main{
 
-    private static Scanner input = new Scanner(System.in);
+    private static Scanner inpu1t = new Scanner(System.in);
 
     public static void main (String args[]) throws Throwable{
         
@@ -22,10 +22,15 @@ public class main{
         tamArchivo = 104857600;
         nomArchivo= "Archivo100.txt";
       }
-      else
+      else if (Num.equals("2"))
       {
         tamArchivo = 262144000;
         nomArchivo= "Archivo250.txt";
+      }
+      else
+      {
+        tamArchivo = 1000;
+        nomArchivo= "og.txt";
       }
 
       Cliente Cinicial = new Cliente(0, tamArchivo, nomArchivo);

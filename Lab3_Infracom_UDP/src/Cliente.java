@@ -58,7 +58,7 @@ public class Cliente extends Thread{
         DatagramSocket socketUDP = new DatagramSocket();
         
         //Envio un mensaje de config al servidor
-        String mensaje = String.valueOf(NumClientes)+"-"+String.valueOf(tamArchivo)+"-"+nomArchivo;
+        String mensaje = String.valueOf(NumClientes)+"-"+String.valueOf(tamArchivo)+"-"+nomArchivo+"-";
         buffer = mensaje.getBytes();
 
         //Creo un datagrama
@@ -84,7 +84,7 @@ public class Cliente extends Thread{
 
             //Envio un mensaje al cliente
             //"Hola mundo desde el cliente-" + Integer.toString(ID));
-            String mensaje = "¡Hola mundo desde el cliente-"+ Integer.toString(ID);
+            String mensaje = "¡Hola mundo desde el cliente-"+ Integer.toString(ID)+"-";
 
             byte[] buffer = new byte[10];
             buffer = mensaje.getBytes();
@@ -124,7 +124,7 @@ public class Cliente extends Thread{
                 bytesReceived+=64000;
 
                 i+=1;
-                System.out.println("Voy en");
+                System.out.print("Voy en: ");
                 System.out.println(i);
             }
 
@@ -132,7 +132,7 @@ public class Cliente extends Thread{
             fr.write(archivo);
             fr.close();
 
-
+            System.out.println("Logré salir");
             elapsedTime = System.currentTimeMillis() - startTime;
 
             // Hacer logs
