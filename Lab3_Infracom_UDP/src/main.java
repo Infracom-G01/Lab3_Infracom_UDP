@@ -22,16 +22,12 @@ public class main{
         tamArchivo = 104857600;
         nomArchivo= "Archivo100.txt";
       }
-      else if (Num.equals("2"))
+      else 
       {
         tamArchivo = 262144000;
         nomArchivo= "Archivo250.txt";
       }
-      else
-      {
-        tamArchivo = 1000;
-        nomArchivo= "og.txt";
-      }
+
 
       Cliente Cinicial = new Cliente(0, tamArchivo, nomArchivo);
       Cinicial.conexionInicial(NumClientes, tamArchivo, nomArchivo);

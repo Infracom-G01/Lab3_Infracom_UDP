@@ -19,7 +19,7 @@ public class Cliente extends Thread{
     private String nomArchivo;
     private static int totalClientes;
 
-    private final String HOST = "localhost";//"192.168.106.128";
+    private final String HOST = "192.168.106.128";//"localhost";
     private final int PUERTO = 5000;
     private int tamChunk = 64000;
 
